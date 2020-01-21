@@ -7,8 +7,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'landing-page',
-      component: require('@/components/LandingPage').default
+      name: 'மத்திய பக்கம்',
+      component: require('@/components/மத்தியபக்கம்').default
+    },
+    {
+      path: '/கட்டுமனம்',
+      name: 'கட்டுமனம்',
+      component: require('@/components/கட்டுமனம்').default
     },
     {
       path: '*',

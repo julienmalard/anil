@@ -1,9 +1,10 @@
 {
   "name": "anil",
   "version": "0.0.1",
-  "author": "Julien Malard <julien.malard@mail.mcgill.ca>",
+  "author": "julienmalard <julien.malard@mail.mcgill.ca>",
   "description": "An electron-vue project",
-  "license": null,
+  "repository": "https://github.com/julienmalard/anil",
+  "license": "AGPLv3",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
@@ -23,7 +24,7 @@
   },
   "build": {
     "productName": "anil",
-    "appId": "com.example.anil",
+    "appId": "com.example.yourapp",
     "directories": {
       "output": "build"
     },
@@ -56,8 +57,12 @@
     }
   },
   "dependencies": {
-    "vue": "^2.5.16",
+    "@fortawesome/fontawesome-svg-core": "^1.2.26",
+    "@fortawesome/free-solid-svg-icons": "^5.12.0",
+    "@fortawesome/vue-fontawesome": "^0.1.9",
     "axios": "^0.18.0",
+    "bulma": "^0.8.0",
+    "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
@@ -71,7 +76,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
-    "babili-webpack-plugin": "^0.1.2",
+    "babel-minify-webpack-plugin": "^0.3.1",
     "cfonts": "^2.1.2",
     "chalk": "^2.4.1",
     "copy-webpack-plugin": "^4.5.1",
