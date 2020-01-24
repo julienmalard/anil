@@ -8,10 +8,10 @@ import router from './router'
 import store from './store'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faFile, faSave, faFolderOpen, faPlus, faGlobeAfrica, faCog, faEdit, faEye, faCaretRight, faDesktop } from '@fortawesome/free-solid-svg-icons'
+import { faFile, faSave, faFolderOpen, faPlus, faGlobeAfrica, faCog, faEdit, faEye, faCaretRight, faDesktop, faTable } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faFile, faSave, faFolderOpen, faPlus, faGlobeAfrica, faCog, faEdit, faEye, faCaretRight, faDesktop)
+library.add(faFile, faSave, faFolderOpen, faPlus, faGlobeAfrica, faCog, faEdit, faEye, faCaretRight, faDesktop, faTable)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))

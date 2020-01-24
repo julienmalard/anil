@@ -1,7 +1,8 @@
 <template>
   <div id="wrapper">
+
     <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
-    <main>
+    <div>
       <div class="left-side">
         <span class="title">
           Welcome to your new project!
@@ -25,7 +26,7 @@
           <button class="alt" @click="open('https://vuejs.org/v2/guide/')">Vue.js</button>
         </div>
       </div>
-    </main>
+    </div>
   </div>
 </template>
 
