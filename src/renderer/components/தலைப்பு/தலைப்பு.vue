@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-    <div class="container is-fluid">
+    <div id="கட்டுப்பாடுகள்" class="container is-fluid is-paddingless">
       <kattupadukal v-bind:ceyalil="செயலில்"></kattupadukal>
     </div>
   </div>
@@ -53,7 +53,8 @@
 </script>
 
 <style scoped>
-  #தலைப்பு {
+  #தலைப்பு, #கட்டுப்பாடுகள் {
     padding: 10px 20px;
+    background-color: #ffffff;
   }
 </style>

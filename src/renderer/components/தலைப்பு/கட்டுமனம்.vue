@@ -1,11 +1,11 @@
 <template>
   <div id="கட்டுமனம்" class="columns" v-show="ceyalil">
     <div class="column">வடிவம்</div>
-    <div class="column" style="padding-top:0">
-      <div class="container" style="padding:5px">
+    <div class="column">
+      <div class="container">
         மாறிகள்
       </div>
-      <div class="container" style="padding:5px">
+      <div class="container">
         <div class="columns">
           <div class="column">
             <svg class="சின்னம்" viewBox="0 0 70 40">
@@ -47,8 +47,8 @@
         </div>
       </div>
     </div>
+    <div class="column">இணைப்பு</div>
     <div class="column">அலங்காரம்</div>
-    <div class="column">வரைபடம்</div>
   </div>
 </template>
 

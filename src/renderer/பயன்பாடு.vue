@@ -1,21 +1,44 @@
 <template>
   <div id="பயன்பாடு">
-    <talaipu></talaipu>
-    <div class="container is-fluid is-paddingless">
+    <div id="entête">
+      <talaipu></talaipu>
+    </div>
+    <div class="mod">
+      <varaitirai></varaitirai>
     </div>
     <!-- <router-view></router-view> -->
   </div>
 </template>
 
 <script>
-  import talaipu from './components/தலைப்பு'
-  
+  import talaipu from './components/தலைப்பு/தலைப்பு'
+  import varaitirai from './components/வரைதிரை/வரைதிரை'
+
   export default {
     name: 'அணில்',
-    components: { talaipu }
+    components: { talaipu, varaitirai }
   }
 </script>
 
 <style>
-  /* CSS */
+#பயன்பாடு {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+#svgmod {
+  height: 2000px;
+  width: 3000px;
+  flex: 1 1 auto;
+}
+#entête {
+  flex: 0 1 auto;
+}
+html, body {
+  height: 100%;
+}
+.mod {
+  overflow: scroll;
+  border-top: 2px solid #eeeeee;
+}
 </style>
