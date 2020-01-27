@@ -4,7 +4,7 @@ import axios from 'axios'
 import 'bulma/css/bulma.css'
 
 import App from './பயன்பாடு'
-import router from './router'
+// import router from './router'
 import store from './store'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -21,7 +21,7 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   components: { App },
-  router,
+  // router,
   store,
   template: '<App/>'
 }).$mount('#பயன்பாடு')
