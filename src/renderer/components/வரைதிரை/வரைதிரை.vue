@@ -1,7 +1,12 @@
 <template>
   <svg id="svgmod">
     <nilai v-for="nilai in nilaigal" :key="nilai.id" :nilai="nilai" />
-    <ottam />
+    <ottam v-for="ottam in ottangal"
+      :key="ottam.id"
+      :ottam="ottam"
+      :todakkam="mariPera(ottam.todakkam)"
+      :irudi="mariPera(ottam.irudi)"
+    />
     <mari v-for="mari in marigal" :key="mari.id" :mari="mari" />
     <ambu v-for="ambu in ambugal"
       :key="ambu.id"
@@ -13,38 +18,41 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   import nilai from './நிலை'
   import mari from './மாறி'
   import ambu from './அம்பு'
+  import ottam from './ஓட்டம்'
 
   export default {
     name: 'வரைதிரை',
-    components: { nilai, mari, ambu },
+    components: { nilai, mari, ambu, ottam },
     methods: {
-      mariPera (peyar) {
-        let mari = this.nilaigal.find(nilai => nilai.பெயர் === peyar)
-        if (mari) {
-          return mari
+      mariPera (பெயர்) {
+        let மாறி = this.nilaigal.find(nilai => nilai.பெயர் === பெயர்)
+        if (மாறி) {
+          return மாறி
         }
-        return this.marigal.find(mari => mari.பெயர் === peyar)
+        return this.marigal.find(மாறி => மாறி.பெயர் === பெயர்)
       }
     },
     computed: {
       nilaigal () {
-        return [
-          { id: 1, பெயர்: 'வணக்கம்', உயரம்: 40, அகலம்: 130, ங: 500, ஞ: 30 }
-        ]// this.$store.பார்வை.நிலைகள்
+        return this.$store.state.பார்வை.நிலைகள்
       },
       marigal () {
-        return [
-          { id: 3, பெயர்: 'எப்படி', ங: 250, ஞ: 30 }
-        ]// this.$store.பார்வை.நிலைகள்
+        return this.$store.state.பார்வை.மாறிகள்
       },
       ambugal () {
-        return [
-          { id: 2, todakkam: 'வணக்கம்', irudi: 'எப்படி', ங: 400, ஞ: 100 }
-        ]// this.$store.பார்வை.நிலைகள்
-      }
+        return this.$store.state.பார்வை.அன்புகள்
+      },
+      ottangal () {
+        return this.$store.state.பார்வை.ஓட்டங்கள்
+      },
+      ...mapGetters([
+        'பார்வை.மாறி_பெற'
+      ])
     }
   }
 </script>
