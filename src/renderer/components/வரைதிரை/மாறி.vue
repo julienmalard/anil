@@ -24,9 +24,12 @@
 </template>
 
 <script>
+import சுட்டிகண்டுபிடி from './சுட்டி'
+
 export default {
   name: 'மாறி',
   props: [ 'mari' ],
+  mixins: [சுட்டிகண்டுபிடி],
   data () {
     return {
       startPosition: null,
@@ -39,24 +42,9 @@ export default {
     }
   },
   methods: {
-    getLocation (e) {
-      /* マウスカーソルの位置またはタッチ位置を返す */
-      let x = 0
-      let y = 0
-      if (e.touches) {
-        /* タッチの場合 */
-        x = e.touches[0].pageX
-        y = e.touches[0].pageY
-      } else {
-        /* マウスの場合 */
-        x = e.pageX
-        y = e.pageY
-      }
-      return [x, y]
-    },
     mousedown (e) {
-      console.log('mousedown')
-      const [x, y] = this.getLocation(e)
+      console.log(சுட்டிகண்டுபிடி)
+      const [x, y] = this.சுட்டிகண்டுபிடி(e)
       this.cursorOffset.x = x
       this.cursorOffset.y = y
       this.startPosition = { x: this.x, y: this.y }
@@ -67,7 +55,7 @@ export default {
     mousemove (e) {
       if (this.startPosition) {
         e.preventDefault()
-        const [x, y] = this.getLocation(e)
+        const [x, y] = this.சுட்டிகண்டுபிடி(e)
 
         this.x =
           this.startPosition.x +
@@ -82,7 +70,6 @@ export default {
       }
     },
     mouseup (e) {
-      console.log('mouseup')
       this.startPosition = null
       document.removeEventListener('mousemove', this.mousemove)
       document.removeEventListener('mouseup', this.mouseup)

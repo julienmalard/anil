@@ -5,7 +5,7 @@ const state = {
     { id: 4, பெயர்: 'கடல்', அகலம்: 130, உயரம்: 40, ங: 800, ஞ: 30 }
   ],
   ஓட்டங்கள்: [
-    { id: 5, பெயர்: 'ஆறு', todakkam: 'ஏறி', irudi: 'கடல்', உயரம்: 40, அகலம்: 130, ங: 500, ஞ: 30 }
+    { id: 5, பெயர்: 'ஆறு', todakkam: 'ஏறி', irudi: 'கடல்', சதம்_தொடக்கம்: 0.5, சதம்_இறுதி: 0.5, ங: 715, ஞ: 50 }
   ],
   அன்புகள்: [{ id: 2, todakkam: 'ஏறி', irudi: 'எப்படி', ங: 400, ஞ: 100 }]
 }
@@ -23,12 +23,17 @@ const getters = {
       let nilai = state.நிலைகள்.find(நிலை => நிலை.id === id)
       if (nilai) {
         return [
-          nilai.ங, nilai.ஞ, nilai.ங + nilai.அகலம், nilai.ஞ + nilai.உயரம்
+          nilai.ங,
+          nilai.ஞ,
+          nilai.ங + nilai.அகலம்,
+          nilai.ஞ + nilai.உயரம்,
+          nilai.ங + nilai.அகலம் / 2,
+          nilai.ஞ + nilai.உயரம் / 2
         ]
       }
       let mari = state.மாறிகள்.find(மாறி => மாறி.id === id)
       return [
-        mari.ங - 20, mari.ஞ - 20, mari.ங + 20, mari.ஞ + 20
+        mari.ங - 40, mari.ஞ - 40, mari.ங + 40, mari.ஞ + 40, mari.ங, mari.ஞ
       ]
     }
   }
@@ -58,6 +63,12 @@ const mutations = {
     for (let key in marram) {
       mari[key] = marram[key]
     }
+  },
+  ottamMarram (state, marram) {
+    let mari = state.ஓட்டங்கள்.find(ஓட்டம் => ஓட்டம்.id === marram['id'])
+    for (let key in marram) {
+      mari[key] = marram[key]
+    }
   }
 }
 
@@ -70,6 +81,9 @@ const actions = {
   },
   mariMarram ({ commit, state }, marram) {
     commit('mariMarram', marram)
+  },
+  ottamMarram ({ commit, state }, marram) {
+    commit('ottamMarram', marram)
   }
 }
 
