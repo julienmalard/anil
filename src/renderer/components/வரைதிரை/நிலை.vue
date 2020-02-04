@@ -22,7 +22,7 @@
     >
       {{ nilai.பெயர் }}
     </text>
-    <g>
+    <g v-show="திருத்தல்">
       <circle
         :cx="nilai.ங"
         :cy="nilai.ஞ"
@@ -76,68 +76,50 @@
 </template>
 
 <script>
-import சுட்டிகண்டுபிடி from './சுட்டி'
+import சுட்டியிழுத்தல் from './சுட்டி'
+import உருப்படி from './உருப்படி'
 
 export default {
   name: 'நிலை',
   props: [ 'nilai' ],
-  mixins: [சுட்டிகண்டுபிடி],
-  data () {
-    return {
-      startPosition: null,
-      nagarttalVagai: null,
-      cursorOffset: {
-        x: 0,
-        y: 0
-      }
-    }
-  },
+  mixins: [ உருப்படி ],
   methods: {
     mousedown (வகை, நி) {
-      this.nagarttalVagai = வகை
-      const [x, y] = this.சுட்டிகண்டுபிடி(நி)
-      this.cursorOffset.x = x
-      this.cursorOffset.y = y
-      this.startPosition = { x: this.nilai.ங, y: this.nilai.ஞ }
-
-      document.addEventListener('mousemove', this.mousemove)
-      document.addEventListener('mouseup', this.mouseup)
+      if (this.திருத்தல்) {
+        this.சுட்டியிழுத்தல் = new சுட்டியிழுத்தல்(நி, { ங: this.nilai.ங, ஞ: this.nilai.ஞ }, வகை)
+        document.addEventListener('mousemove', this.mousemove)
+        document.addEventListener('mouseup', this.mouseup)
+      }
     },
-    mousemove (e) {
-      if (this.nagarttalVagai) {
-        let [x, y] = this.சுட்டிகண்டுபிடி(e)
+    mousemove (நி) {
+      if (this.சுட்டியிழுத்தல்) {
+        const மூல் = this.சுட்டியிழுத்தல்.சுட்டிகண்டுபிடி_மூல்(நி)
 
-        if (this.nagarttalVagai === 'நகர்த்தல்') {
-          x = this.startPosition.x + (x - this.cursorOffset.x)
-          y = this.startPosition.y + (y - this.cursorOffset.y)
+        if (this.சுட்டியிழுத்தல்.வகை === 'நகர்த்தல்') {
+          const [ங, ஞ] = this.சுட்டியிழுத்தல்.சுட்டிகண்டுபிடி(நி)
+
           this.$store.dispatch(
-            'பார்வை/nilaiMarram',
-            { id: this.nilai.id, ங: x, ஞ: y }
+            'பார்வை/உருப்படி_மாற்றம்',
+            { id: this.nilai.id, ங: ங, ஞ: ஞ }
           )
-        } else if (this.nagarttalVagai === 'அளவைமாற்றமிடது') {
-          x = this.startPosition.x + (x - this.cursorOffset.x)
-          y = this.startPosition.y + (y - this.cursorOffset.y)
+        } else if (this.சுட்டியிழுத்தல்.வகை === 'அளவைமாற்றமிடது') {
+          const [, ஞ] = this.சுட்டியிழுத்தல்.சுட்டிகண்டுபிடி(நி)
           this.$store.dispatch(
-            'பார்வை/nilaiMarram',
+            'பார்வை/உருப்படி_மாற்றம்',
             {
               id: this.nilai.id,
-              ங: Math.min(x, this.nilai.ங + this.nilai.அகலம் - 50),
-              ஞ: y,
-              அகலம்: Math.max(50, this.nilai.ங - x + this.nilai.அகலம்)
+              ங: Math.min(மூல்.ங, this.nilai.ங + this.nilai.அகலம் - 50),
+              ஞ: ஞ,
+              அகலம்: Math.max(50, this.nilai.ங - மூல்.ங + this.nilai.அகலம்)
             }
           )
-        } else if (this.nagarttalVagai === 'அளவைமாற்றம்வலது') {
+        } else if (this.சுட்டியிழுத்தல்.வகை === 'அளவைமாற்றம்வலது') {
           this.$store.dispatch(
-            'பார்வை/nilaiMarram',
-            { id: this.nilai.id, அகலம்: Math.max(50, x - this.nilai.ங) }
+            'பார்வை/உருப்படி_மாற்றம்',
+            { id: this.nilai.id, அகலம்: Math.max(50, மூல்.ங - this.nilai.ங) }
           )
         }
       }
-    },
-    mouseup (e) {
-      this.startPosition = this.nagarttalVagai = null
-      document.removeEventListener('mousemove', this.mousemove)
-      document.removeEventListener('mouseup', this.mouseup)
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <li
+  <v-tab
     v-bind:class="{ 'is-active': ceyalil ==  taval.பெயர் }"
     @click="செயலாக்க(taval.பெயர்)"
   >
@@ -7,7 +7,7 @@
       <p class="level-item"><font-awesome-icon :icon='taval.சின்னம்' /></p>
       <span>{{ taval.பெயர் }}</span>
     </a>
-  </li>
+  </v-tab>
 </template>
 
 <script>

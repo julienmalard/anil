@@ -7,19 +7,19 @@
         <path d="M0,0 L0,6 L9,3 z" fill="#3366ff" />
       </marker>
     </defs>
-    <g>
+    <g v-show="திருத்தல்">
       <line
         :x1="ambu.ங"
         :y1="ambu.ஞ"
-        :x2="calcSource(todakkam).x"
-        :y2="calcSource(todakkam).y"
+        :x2="calcSource(todakkam).ங"
+        :y2="calcSource(todakkam).ஞ"
         stroke="#99ccff"
       />
       <line
         :x1="ambu.ங"
         :y1="ambu.ஞ"
-        :x2="calcSource(irudi).x"
-        :y2="calcSource(irudi).y"
+        :x2="calcSource(irudi).ங"
+        :y2="calcSource(irudi).ஞ"
         stroke="#99ccff"
       />
       <circle
@@ -37,9 +37,9 @@
     </g>
     <path
       :d="
-        `M ${calcSource(todakkam).x} ${calcSource(todakkam).y}
+        `M ${calcSource(todakkam).ங} ${calcSource(todakkam).ஞ}
          Q ${ambu.ங} ${ambu.ஞ}
-        ${calcSource(irudi).x} ${calcSource(irudi).y}`
+        ${calcSource(irudi, ஆரை=40).ங} ${calcSource(irudi, ஆரை=40).ஞ}`
       "
       style="fill:transparent;stroke-width:2;stroke:#3366ff"
       marker-end="url(#arrow)"
@@ -48,71 +48,66 @@
 </template>
 
 <script>
-import சுட்டிகண்டுபிடி from './சுட்டி'
+import சுட்டியிழுத்தல் from './சுட்டி'
+import உருப்படி from './உருப்படி'
 
 export default {
   name: 'அம்பு',
   props: [ 'ambu', 'todakkam', 'irudi' ],
-  mixins: [சுட்டிகண்டுபிடி],
-  data () {
-    return {
-      startPosition: null,
-      cursorOffset: {
-        x: 0,
-        y: 0
-      }
-    }
-  },
+  mixins: [ உருப்படி ],
   methods: {
-    mousedown (e) {
-      const [x, y] = this.சுட்டிகண்டுபிடி(e)
-      this.cursorOffset.x = x
-      this.cursorOffset.y = y
-      this.startPosition = { x: this.ambu.ங, y: this.ambu.ஞ }
+    mousedown (நி) {
+      if (this.திருத்தல்) {
+        this.சுட்டியிழுத்தல் = new சுட்டியிழுத்தல்(நி, { ங: this.ambu.ங, ஞ: this.ambu.ஞ })
 
-      document.addEventListener('mousemove', this.mousemove)
-      document.addEventListener('mouseup', this.mouseup)
+        document.addEventListener('mousemove', this.mousemove)
+        document.addEventListener('mouseup', this.mouseup)
+      }
     },
-    mousemove (e) {
-      if (this.startPosition) {
-        e.preventDefault()
-        let [x, y] = this.சுட்டிகண்டுபிடி(e)
-
-        x = this.startPosition.x + (x - this.cursorOffset.x)
-        y = this.startPosition.y + (y - this.cursorOffset.y)
-
+    mousemove (நி) {
+      if (this.சுட்டியிழுத்தல்) {
+        நி.preventDefault()
+        const [ங, ஞ] = this.சுட்டியிழுத்தல்.சுட்டிகண்டுபிடி(நி)
         this.$store.dispatch(
-          'பார்வை/ambuMarram',
-          { id: this.ambu.id, ங: x, ஞ: y }
+          'பார்வை/உருப்படி_மாற்றம்',
+          { id: this.ambu.id, ங: ங, ஞ: ஞ }
         )
       }
     },
-    mouseup (e) {
-      this.startPosition = null
-      document.removeEventListener('mousemove', this.mousemove)
-      document.removeEventListener('mouseup', this.mouseup)
-    },
-    calcSource (mari) {
+    calcSource (உருப்படி, ஆரை = 20) {
       let x = this.ambu.ங
       let y = this.ambu.ஞ
-      var tx, ty
-      let [px, py, pw, pz, cx, cy] = this.$store.getters['பார்வை/petti_pera'](mari.id)
+      let ங, ஞ
 
-      if (y < cy) {
-        tx = cx + (x - cx) * (1 - (y - py) / (y - cy))
+      if (உருப்படி.வகை === 'நிலை') {
+        let மையம் = { ங: உருப்படி.ங + உருப்படி.அகலம் / 2, ஞ: உருப்படி.ஞ + உருப்படி.உயரம் / 2 }
+        let பெட்டி = {
+          வமே: { ங: உருப்படி.ங, ஞ: உருப்படி.ஞ },
+          தேகி: { ங: உருப்படி.ங + உருப்படி.அகலம், ஞ: உருப்படி.ஞ + உருப்படி.உயரம் }
+        }
+
+        if (y < மையம்.ஞ) {
+          ங = மையம்.ங + (x - மையம்.ங) * (1 - (y - பெட்டி.வமே.ஞ) / (y - மையம்.ஞ))
+        } else {
+          ங = மையம்.ங + (x - மையம்.ங) * (1 - (y - பெட்டி.தேகி.ஞ) / (y - மையம்.ஞ))
+        }
+        ங = ங < பெட்டி.வமே.ங ? பெட்டி.வமே.ங : (ங > பெட்டி.தேகி.ங ? பெட்டி.தேகி.ங : ங)
+
+        if (x < மையம்.ங) {
+          ஞ = மையம்.ஞ + (y - மையம்.ஞ) * (1 - (x - பெட்டி.வமே.ங) / (x - மையம்.ங))
+        } else {
+          ஞ = மையம்.ஞ + (y - மையம்.ஞ) * (1 - (x - பெட்டி.தேகி.ங) / (x - மையம்.ங))
+        }
+        ஞ = ஞ < பெட்டி.வமே.ஞ ? பெட்டி.வமே.ஞ : (ஞ > பெட்டி.தேகி.ஞ ? பெட்டி.தேகி.ஞ : ஞ)
+      } else if (உருப்படி.வகை === 'துணை') {
+        let தூரம் = Math.sqrt((x - உருப்படி.ங) ** 2 + (y - உருப்படி.ஞ) ** 2)
+        ங = ஆரை / தூரம் * (x - உருப்படி.ங) + உருப்படி.ங
+        ஞ = ஆரை / தூரம் * (y - உருப்படி.ஞ) + உருப்படி.ஞ
       } else {
-        tx = cx + (x - cx) * (1 - (y - pz) / (y - cy))
+        ங = உருப்படி.ங
+        ஞ = உருப்படி.ஞ
       }
-      tx = tx < px ? px : (tx > pw ? pw : tx)
-
-      if (x < cx) {
-        ty = cy + (y - cy) * (1 - (x - px) / (x - cx))
-      } else {
-        ty = cy + (y - cy) * (1 - (x - pw) / (x - cx))
-      }
-      ty = ty < py ? py : (ty > pz ? pz : ty)
-
-      return { x: tx, y: ty }
+      return { ங, ஞ }
     }
   }
 }

@@ -19,7 +19,7 @@
         "
         fill="transparent" stroke="black" stroke-width="1.5px"
       />
-      <circle
+      <circle v-show="திருத்தல்"
         :cx="todakkam.ங + todakkam.அகலம் * ottam.சதம்_தொடக்கம்"
         :cy="(ottam.ஞ + todakkam.ஞ + todakkam.உயரம்) / 2"
         r=3
@@ -67,7 +67,7 @@
         "
         fill="transparent" stroke="black" stroke-width="1.5px"
       />
-      <circle
+      <circle v-show="திருத்தல்"
         :cx="todakkam.ங + todakkam.அகலம் * ottam.சதம்_தொடக்கம்"
         :cy="(ottam.ஞ + todakkam.ஞ) / 2"
         r=3
@@ -108,7 +108,7 @@
         stroke="black" stroke-width="1.5px"
         stroke-linecap="butt" fill="none" stroke-linejoin="miter"
       />
-      <circle
+      <circle v-show="திருத்தல்"
         :cx="irudi.ங + irudi.அகலம் * ottam.சதம்_இறுதி"
         :cy="(ottam.ஞ + irudi.ஞ + irudi.உயரம்) / 2"
         r=3
@@ -174,7 +174,7 @@
         stroke="black" stroke-width="1.5px"
         stroke-linecap="butt" fill="none" stroke-linejoin="miter"
       />
-      <circle
+      <circle v-show="திருத்தல்"
         :cx="irudi.ங + irudi.அகலம் * ottam.சதம்_இறுதி"
         :cy="(ottam.ஞ + irudi.ஞ) / 2"
         r=3
@@ -210,7 +210,7 @@
     >
       {{ ottam.பெயர் }}
     </text>
-    <circle
+    <circle v-show="திருத்தல்"
       :cx="ottam.ங"
       :cy="ottam.ஞ"
       r=3
@@ -226,79 +226,61 @@
 </template>
 
 <script>
-import சுட்டிகண்டுபிடி from './சுட்டி'
+import சுட்டியிழுத்தல் from './சுட்டி'
+import உருப்படி from './உருப்படி'
 
 export default {
   name: 'ஓட்டம்',
   props: [ 'ottam', 'todakkam', 'irudi' ],
-  mixins: [சுட்டிகண்டுபிடி],
-  data () {
-    return {
-      startPosition: null,
-      nagarttalVagai: null,
-      cursorOffset: {
-        x: 0,
-        y: 0
-      }
-    }
-  },
+  mixins: [ உருப்படி ],
   methods: {
     mousedown (வகை, நி) {
-      this.nagarttalVagai = வகை
-      const [x, y] = this.சுட்டிகண்டுபிடி(நி)
-      this.cursorOffset.x = x
-      this.cursorOffset.y = y
+      let ஆரம்பம்
       if (வகை === 'மையம்நகர்த்தல்') {
-        this.startPosition = { x: this.ottam.ங, y: this.ottam.ஞ }
+        ஆரம்பம் = { ங: this.ottam.ங, ஞ: this.ottam.ஞ }
       } else if (வகை === 'இறுதிநகர்த்தல்') {
-        this.startPosition = {
-          x: this.ottam.சதம்_இறுதி * this.irudi.அகலம் + this.irudi.ங,
-          y: this.ottam.ஞ
+        ஆரம்பம் = {
+          ங: this.ottam.சதம்_இறுதி * this.irudi.அகலம் + this.irudi.ங,
+          ஞ: this.ottam.ஞ
         }
       } else if (வகை === 'தொடக்கம்நகர்த்தல்') {
-        this.startPosition = {
-          x: this.ottam.சதம்_தொடக்கம் * this.todakkam.அகலம் + this.todakkam.ங,
-          y: this.ottam.ஞ
+        ஆரம்பம் = {
+          ங: this.ottam.சதம்_தொடக்கம் * this.todakkam.அகலம் + this.todakkam.ங,
+          ஞ: this.ottam.ஞ
         }
       }
 
+      this.சுட்டியிழுத்தல் = new சுட்டியிழுத்தல்(நி, ஆரம்பம், வகை)
       document.addEventListener('mousemove', this.mousemove)
       document.addEventListener('mouseup', this.mouseup)
     },
-    mousemove (e) {
-      if (this.nagarttalVagai) {
-        let [x, y] = this.சுட்டிகண்டுபிடி(e)
-        x = this.startPosition.x + (x - this.cursorOffset.x)
-        y = this.startPosition.y + (y - this.cursorOffset.y)
+    mousemove (நி) {
+      if (this.சுட்டியிழுத்தல்) {
+        const [ங, ஞ] = this.சுட்டியிழுத்தல்.சுட்டிகண்டுபிடி(நி)
 
-        if (this.nagarttalVagai === 'மையம்நகர்த்தல்') {
+        if (this.சுட்டியிழுத்தல்.வகை === 'மையம்நகர்த்தல்') {
           this.$store.dispatch(
-            'பார்வை/ottamMarram',
-            { id: this.ottam.id, ங: x, ஞ: y }
+            'பார்வை/உருப்படி_மாற்றம்',
+            { id: this.ottam.id, ங: ங, ஞ: ஞ }
           )
-        } else if (this.nagarttalVagai === 'இறுதிநகர்த்தல்') {
+        } else if (this.சுட்டியிழுத்தல்.வகை === 'இறுதிநகர்த்தல்') {
           this.$store.dispatch(
-            'பார்வை/ottamMarram',
+            'பார்வை/உருப்படி_மாற்றம்',
             {
               id: this.ottam.id,
-              சதம்_இறுதி: Math.min(Math.max(0, (x - this.irudi.ங) / this.irudi.அகலம்), 1)
+              சதம்_இறுதி: Math.min(Math.max(0, (ங - this.irudi.ங) / this.irudi.அகலம்), 1)
             }
           )
-        } else if (this.nagarttalVagai === 'தொடக்கம்நகர்த்தல்') {
+        } else if (this.சுட்டியிழுத்தல்.வகை === 'தொடக்கம்நகர்த்தல்') {
           this.$store.dispatch(
-            'பார்வை/ottamMarram',
+            'பார்வை/உருப்படி_மாற்றம்',
             {
               id: this.ottam.id,
-              சதம்_தொடக்கம்: Math.min(Math.max(0, (x - this.todakkam.ங) / this.todakkam.அகலம்), 1)
+              சதம்_தொடக்கம்: Math.min(Math.max(0, (ங - this.todakkam.ங) / this.todakkam.அகலம்), 1)
             }
           )
         }
       }
-    },
-    mouseup (e) {
-      this.startPosition = this.nagarttalVagai = null
-      document.removeEventListener('mousemove', this.mousemove)
-      document.removeEventListener('mouseup', this.mouseup)
     },
     todakkampl () {
       let x = this.todakkam.ங + this.todakkam.அகலம்
@@ -308,11 +290,6 @@ export default {
     irudipl () {
       let x = this.irudi.ங
       let y = this.irudi.ஞ + this.irudi.உயரம் / 2
-      return {x, y}
-    },
-    naduttara () {
-      let x = ((this.todakkam.ங + this.todakkam.அகலம்) + this.irudi.ங) / 2
-      let y = ((this.irudi.ஞ + this.irudi.உயரம் / 2 - 15) + (this.todakkam.ஞ + this.todakkam.உயரம் / 2 - 15)) / 2
       return {x, y}
     }
   }

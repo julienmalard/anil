@@ -1,89 +1,65 @@
 const state = {
-  மாறிகள்: [{ id: 3, பெயர்: 'எப்படி', ங: 250, ஞ: 30 }],
-  நிலைகள்: [
-    { id: 1, பெயர்: 'ஏறி', அகலம்: 130, உயரம்: 40, ங: 500, ஞ: 30 },
-    { id: 4, பெயர்: 'கடல்', அகலம்: 130, உயரம்: 40, ங: 800, ஞ: 30 }
-  ],
-  ஓட்டங்கள்: [
-    { id: 5, பெயர்: 'ஆறு', todakkam: 'ஏறி', irudi: 'கடல்', சதம்_தொடக்கம்: 0.5, சதம்_இறுதி: 0.5, ங: 715, ஞ: 50 }
-  ],
-  அன்புகள்: [{ id: 2, todakkam: 'ஏறி', irudi: 'எப்படி', ங: 400, ஞ: 100 }]
+  திருத்தல்நிலை: {பெயர்: 'சேருக'},
+  வடிவம்: {
+    ellaiyakalam: 1,
+    எல்லைநிரம்: '#000000',
+    எல்லைபாணி: null,
+    எழுத்துருகுடும்ப: null,
+    எழுத்துருசாய்வு: null,
+    எழுத்துரகொட்டை: null
+  },
+  உருப்படிகள்: [
+    { id: '3', வகை: 'துணை', பெயர்: 'எப்படி', ங: 250, ஞ: 30 },
+    { id: '1', வகை: 'நிலை', பெயர்: 'ஏறி', அகலம்: 130, உயரம்: 40, ங: 500, ஞ: 30 },
+    { id: '4', வகை: 'நிலை', பெயர்: 'கடல்', அகலம்: 130, உயரம்: 40, ங: 800, ஞ: 30 },
+    { id: '5', வகை: 'ஓட்டம்', பெயர்: 'ஆறு', தொடக்கம்: '1', இறுதி: '4', சதம்_தொடக்கம்: 0.5, சதம்_இறுதி: 0.5, ங: 715, ஞ: 50 },
+    { id: '2', வகை: 'அன்பு', தொடக்கம்: '1', இறுதி: '3', ங: 400, ஞ: 100 }
+    // { id: '6', வகை: 'அன்பு', தொடக்கம்: '3', இறுதி: '5', ங: 400, ஞ: 100 }
+  ]
 }
 
 const getters = {
-  மாறி_பெற (பெயர்) {
-    let மாறி = state.நிலைகள்.find(நிலை => நிலை.பெயர் === பெயர்)
-    if (மாறி) {
-      return மாறி
-    }
-    return state.மாறிகள்.find(மாறி => மாறி.பெயர் === பெயர்)
+  உருப்படி_பெற: (state) => (id) => {
+    return state.உருப்படிகள்.find(உருப்படி => உருப்படி.id === id)
   },
-  petti_pera (state) {
-    return id => {
-      let nilai = state.நிலைகள்.find(நிலை => நிலை.id === id)
-      if (nilai) {
-        return [
-          nilai.ங,
-          nilai.ஞ,
-          nilai.ங + nilai.அகலம்,
-          nilai.ஞ + nilai.உயரம்,
-          nilai.ங + nilai.அகலம் / 2,
-          nilai.ஞ + nilai.உயரம் / 2
-        ]
-      }
-      let mari = state.மாறிகள்.find(மாறி => மாறி.id === id)
-      return [
-        mari.ங - 40, mari.ஞ - 40, mari.ங + 40, mari.ஞ + 40, mari.ங, mari.ஞ
-      ]
-    }
+  நிலைகள் () {
+    return state.உருப்படிகள்.filter(உருப்படி => உருப்படி.வகை === 'நிலை')
+  },
+  ஓட்டங்கள் () {
+    return state.உருப்படிகள்.filter(உருப்படி => உருப்படி.வகை === 'ஓட்டம்')
+  },
+  துணைகள் () {
+    return state.உருப்படிகள்.filter(உருப்படி => உருப்படி.வகை === 'துணை')
+  },
+  அன்புகள் () {
+    return state.உருப்படிகள்.filter(உருப்படி => உருப்படி.வகை === 'அன்பு')
   }
 }
 
 const mutations = {
-  mariSeruga (மாறி) {
-    state.மாறிகள்.push(மாறி)
-  },
-  mariNikku (பெயர்) {
-    state.மாறிகள் = state.மாறிகள்.filter(மாறி => மாறி.பெயர் !== பெயர்)
-  },
-  ambuMarram (state, marram) {
-    let ambu = state.அன்புகள்.find(அன்பு => அன்பு.id === marram['id'])
-    for (let key in marram) {
-      ambu[key] = marram[key]
+  உருப்படி_மாற்றம் (நிலை, மாற்றம்) {
+    let உருப்படி = நிலை.உருப்படிகள்.find(உருப்படி => உருப்படி.id === மாற்றம்.id)
+    for (let சாபி in மாற்றம்) {
+      உருப்படி[சாபி] = மாற்றம்[சாபி]
     }
   },
-  nilaiMarram (state, marram) {
-    let nilai = state.நிலைகள்.find(நிலை => நிலை.id === marram['id'])
-    for (let key in marram) {
-      nilai[key] = marram[key]
-    }
+  செருக (நிலை, உருப்படி) {
+    state.உருப்படிகள்.push(உருப்படி)
   },
-  mariMarram (state, marram) {
-    let mari = state.மாறிகள்.find(மாறி => மாறி.id === marram['id'])
-    for (let key in marram) {
-      mari[key] = marram[key]
-    }
-  },
-  ottamMarram (state, marram) {
-    let mari = state.ஓட்டங்கள்.find(ஓட்டம் => ஓட்டம்.id === marram['id'])
-    for (let key in marram) {
-      mari[key] = marram[key]
-    }
+  திருத்தல்நிலை_மாற்றம் (நிலை, திருத்தல்நிலை) {
+    state.திருத்தல்நிலை = திருத்தல்நிலை
   }
 }
 
 const actions = {
-  ambuMarram ({ commit, state }, marram) {
-    commit('ambuMarram', marram)
+  உருப்படி_மாற்றம் ({ commit, state }, மாற்றம்) {
+    commit('உருப்படி_மாற்றம்', மாற்றம்)
   },
-  nilaiMarram ({ commit, state }, marram) {
-    commit('nilaiMarram', marram)
+  செருக ({ commit, state }, உருப்படி) {
+    commit('செருக', உருப்படி)
   },
-  mariMarram ({ commit, state }, marram) {
-    commit('mariMarram', marram)
-  },
-  ottamMarram ({ commit, state }, marram) {
-    commit('ottamMarram', marram)
+  திருத்தல்நிலை_மாற்றம் ({ commit, state }, திருத்தல்நிலை) {
+    commit('திருத்தல்நிலை_மாற்றம்', திருத்தல்நிலை)
   }
 }
 

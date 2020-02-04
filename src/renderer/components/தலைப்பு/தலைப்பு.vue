@@ -1,22 +1,22 @@
 <template>
   <div>
-    <div class="container is-fluid is-paddingless">
-      <div id="தலைப்பு" class="level is-marginless">
-        <div id="தாவல்கள்" class="level-left tabs is-marginless">
-          <ul>
-            <taval
-              v-for="தாவல் in தாவல்கள்"
-              v-bind:taval="தாவல்"
-              v-bind:ceyalil="செயலில்"
-              v-bind:செயலாக்க="செயலாக்க"
-              v-bind:key="தாவல்.பெயர்">
-            </taval>
-          </ul>
-        </div>
-        <div class="level-right">
-            <p class="level-item"><font-awesome-icon icon="globe-africa" size="lg"/></p>
-            <p class="level-item"><font-awesome-icon icon="cog" size="lg"/></p>
-        </div>
+    <div id="தலைப்பு">
+      <v-tabs>
+        <v-tab>1</v-tab>
+        <v-tab>2</v-tab>
+      </v-tabs>
+      <v-tabs>
+        <taval
+          v-for="தாவல் in தாவல்கள்"
+          v-bind:taval="தாவல்"
+          v-bind:ceyalil="செயலில்"
+          v-bind:செயலாக்க="செயலாக்க"
+          v-bind:key="தாவல்.பெயர்">
+        </taval>
+      </v-tabs>
+      <div class="level-right">
+          <p class="level-item"><font-awesome-icon icon="globe-africa" size="lg"/></p>
+          <p class="level-item"><font-awesome-icon icon="cog" size="lg"/></p>
       </div>
     </div>
     <div id="கட்டுப்பாடுகள்" class="container is-fluid is-paddingless">

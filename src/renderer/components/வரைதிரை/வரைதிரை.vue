@@ -1,18 +1,20 @@
 <template>
-  <svg id="svgmod">
-    <nilai v-for="nilai in nilaigal" :key="nilai.id" :nilai="nilai" />
-    <ottam v-for="ottam in ottangal"
-      :key="ottam.id"
-      :ottam="ottam"
-      :todakkam="mariPera(ottam.todakkam)"
-      :irudi="mariPera(ottam.irudi)"
+  <svg id="svgmod"
+    @click="onClick"
+  >
+    <nilai v-for="நிலை in நிலைகள்" :key="நிலை.id" :nilai="நிலை" />
+    <ottam v-for="ஓட்டம் in ஓட்டங்கள்"
+      :key="ஓட்டம்.id"
+      :ottam="ஓட்டம்"
+      :todakkam="உருப்படி_பெற(ஓட்டம்.தொடக்கம்)"
+      :irudi="உருப்படி_பெற(ஓட்டம்.இறுதி)"
     />
-    <mari v-for="mari in marigal" :key="mari.id" :mari="mari" />
-    <ambu v-for="ambu in ambugal"
-      :key="ambu.id"
-      :ambu="ambu"
-      :todakkam="mariPera(ambu.todakkam)"
-      :irudi="mariPera(ambu.irudi)"
+    <mari v-for="துணை in துணைகள்" :key="துணை.id" :tunai="துணை" />
+    <ambu v-for="அன்பு in அன்புகள்"
+      :key="அன்பு.id"
+      :ambu="அன்பு"
+      :todakkam="உருப்படி_பெற(அன்பு.தொடக்கம்)"
+      :irudi="உருப்படி_பெற(அன்பு.இறுதி)"
     />
   </svg>
 </template>
@@ -21,38 +23,32 @@
   import { mapGetters } from 'vuex'
 
   import nilai from './நிலை'
-  import mari from './மாறி'
+  import mari from './துணை'
   import ambu from './அம்பு'
   import ottam from './ஓட்டம்'
 
   export default {
     name: 'வரைதிரை',
     components: { nilai, mari, ambu, ottam },
-    methods: {
-      mariPera (பெயர்) {
-        let மாறி = this.nilaigal.find(nilai => nilai.பெயர் === பெயர்)
-        if (மாறி) {
-          return மாறி
-        }
-        return this.marigal.find(மாறி => மாறி.பெயர் === பெயர்)
-      }
-    },
     computed: {
-      nilaigal () {
-        return this.$store.state.பார்வை.நிலைகள்
-      },
-      marigal () {
-        return this.$store.state.பார்வை.மாறிகள்
-      },
-      ambugal () {
-        return this.$store.state.பார்வை.அன்புகள்
-      },
-      ottangal () {
-        return this.$store.state.பார்வை.ஓட்டங்கள்
-      },
-      ...mapGetters([
-        'பார்வை.மாறி_பெற'
-      ])
+      ...mapGetters({
+        'உருப்படி_பெற': 'பார்வை/உருப்படி_பெற',
+        'நிலைகள்': 'பார்வை/நிலைகள்',
+        'துணைகள்': 'பார்வை/துணைகள்',
+        'அன்புகள்': 'பார்வை/அன்புகள்',
+        'ஓட்டங்கள்': 'பார்வை/ஓட்டங்கள்'
+      })
+    },
+    methods: {
+      onClick (நி) {
+        const திருத்தல்நிலை = this.$store.state.பார்வை.திருத்தல்நிலை
+        if (திருத்தல்நிலை.பெயர் === 'சேருக') {
+          this.$store.dispatch('பார்வை/செருக', { id: '11', வகை: 'துணை', பெயர்: 'எப்படி2', ங: 400, ஞ: 400 })
+        }
+        if (திருத்தல்நிலை.பெயர் !== 'பூட்டப்பட்டுள்ளது') {
+          this.$store.dispatch('பார்வை/திருத்தல்நிலை_மாற்றம்', { பெயர்: 'திருத்தல்' })
+        }
+      }
     }
   }
 </script>
