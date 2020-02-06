@@ -1,13 +1,14 @@
 <template>
-  <div id="பயன்பாடு">
-    <div id="entête">
-      <talaipu></talaipu>
+  <v-app>
+    <div id="பயன்பாடு">
+      <div id="entête">
+        <talaipu></talaipu>
+      </div>
+      <div class="mod">
+        <varaitirai></varaitirai>
+      </div>
     </div>
-    <div class="mod">
-      <varaitirai></varaitirai>
-    </div>
-    <!-- <router-view></router-view> -->
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -15,7 +16,7 @@
   import varaitirai from './components/வரைதிரை/வரைதிரை'
 
   export default {
-    name: 'அணில்',
+    name: 'App',
     components: { talaipu, varaitirai }
   }
 </script>
