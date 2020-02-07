@@ -9,7 +9,7 @@
       :todakkam="உருப்படி_பெற(ஓட்டம்.தொடக்கம்)"
       :irudi="உருப்படி_பெற(ஓட்டம்.இறுதி)"
     />
-    <mari v-for="துணை in துணைகள்" :key="துணை.id" :tunai="துணை" />
+    <tunai v-for="துணை in துணைகள்" :key="துணை.id" :tunai="துணை" />
     <ambu v-for="அன்பு in அன்புகள்"
       :key="அன்பு.id"
       :ambu="அன்பு"
@@ -23,13 +23,13 @@
   import { mapGetters } from 'vuex'
 
   import nilai from './நிலை'
-  import mari from './துணை'
+  import tunai from './துணை'
   import ambu from './அம்பு'
   import ottam from './ஓட்டம்'
 
   export default {
     name: 'வரைதிரை',
-    components: { nilai, mari, ambu, ottam },
+    components: { nilai, tunai, ambu, ottam },
     computed: {
       ...mapGetters({
         'உருப்படி_பெற': 'பார்வை/உருப்படி_பெற',

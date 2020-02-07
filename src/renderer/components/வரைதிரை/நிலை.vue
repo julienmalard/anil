@@ -8,8 +8,8 @@
       rx=2
       ry=2
       style="fill:#ffffff;stroke-width:1;stroke:#000000;cursor:-webkit-grab;"
-      @mousedown="mousedown('நகர்த்தல்', $event)"
-      @touchstart="mousedown('நகர்த்தல்', $event)"
+      @mousedown="mousedown('நகர்த்தல்', { ங: nilai.ங, ஞ: nilai.ஞ }, $event)"
+      @touchstart="mousedown('நகர்த்தல்', { ங: nilai.ங, ஞ: nilai.ஞ }, $event)"
       @mousemove.prevent="mousemove"
       @touchmove.prevent="mousemove"
       @mouseup="mouseup"
@@ -28,8 +28,12 @@
         :cy="nilai.ஞ"
         r=3
         style="fill:transparent;stroke-width:1;stroke:#99ccff;cursor:nwse-resize;"
-        @mousedown="mousedown('அளவைமாற்றமிடது', $event)"
-        @touchstart="mousedown('அளவைமாற்றமிடது', $event)"
+        @mousedown="mousedown(
+          'அளவைமாற்றம்-மேலே-இடது', { ங: nilai.ங, ஞ: nilai.ஞ }, $event)
+          "
+        @touchstart="mousedown(
+          'அளவைமாற்றம்-மேலே-இடது', { ங: nilai.ங, ஞ: nilai.ஞ }, $event)
+          "
         @mousemove.prevent="mousemove"
         @touchmove.prevent="mousemove"
         @mouseup="mouseup"
@@ -40,8 +44,12 @@
         :cy="nilai.ஞ"
         r=3
         style="fill:transparent;stroke-width:1;stroke:#99ccff;cursor:nesw-resize;"
-        @mousedown="mousedown('அளவைமாற்றம்வலது', $event)"
-        @touchstart="mousedown('அளவைமாற்றம்வலது', $event)"
+        @mousedown="mousedown(
+          'அளவைமாற்றம்-மேலே-வலது', { ங: nilai.ங + nilai.அகலம், ஞ: nilai.ஞ },
+          $event)"
+        @touchstart="mousedown(
+          'அளவைமாற்றம்-மேலே-வலது', { ங: nilai.ங + nilai.அகலம், ஞ: nilai.ஞ },
+          $event)"
         @mousemove.prevent="mousemove"
         @touchmove.prevent="mousemove"
         @mouseup="mouseup"
@@ -52,8 +60,12 @@
         :cy="nilai.ஞ + nilai.உயரம்"
         r=3
         style="fill:transparent;stroke-width:1;stroke:#99ccff;cursor:nesw-resize;"
-        @mousedown="mousedown('அளவைமாற்றமிடது', $event)"
-        @touchstart="mousedown('அளவைமாற்றமிடது', $event)"
+        @mousedown="mousedown(
+          'அளவைமாற்றம்-கீழே-இடது', { ங: nilai.ங, ஞ: nilai.ஞ + nilai.உயரம் },
+          $event)"
+        @touchstart="mousedown(
+          'அளவைமாற்றம்-கீழே-இடத', { ங: nilai.ங, ஞ: nilai.ஞ + nilai.உயரம் },
+          $event)"
         @mousemove.prevent="mousemove"
         @touchmove.prevent="mousemove"
         @mouseup="mouseup"
@@ -64,8 +76,12 @@
         :cy="nilai.ஞ + nilai.உயரம்"
         r=3
         style="fill:transparent;stroke-width:1;stroke:#99ccff;cursor:nwse-resize;"
-        @mousedown="mousedown('அளவைமாற்றம்வலது', $event)"
-        @touchstart="mousedown('அளவைமாற்றம்வலது', $event)"
+        @mousedown="mousedown(
+          'அளவைமாற்றம்-கீழே-வலது', { ங: nilai.ங + nilai.அகலம், ஞ: nilai.ஞ + nilai.உயரம் },
+          $event)"
+        @touchstart="mousedown(
+          'அளவைமாற்றம்-கீழே-வலது', { ங: nilai.ங + nilai.அகலம், ஞ: nilai.ஞ + nilai.உயரம் },
+          $event)"
         @mousemove.prevent="mousemove"
         @touchmove.prevent="mousemove"
         @mouseup="mouseup"
@@ -84,41 +100,41 @@ export default {
   props: [ 'nilai' ],
   mixins: [ உருப்படி ],
   methods: {
-    mousedown (வகை, நி) {
+    mousedown (வகை, ஆரம்பம், நி) {
       if (this.திருத்தல்) {
-        this.சுட்டியிழுத்தல் = new சுட்டியிழுத்தல்(நி, { ங: this.nilai.ங, ஞ: this.nilai.ஞ }, வகை)
+        this.சுட்டியிழுத்தல் = new சுட்டியிழுத்தல்(நி, ஆரம்பம், வகை)
         document.addEventListener('mousemove', this.mousemove)
         document.addEventListener('mouseup', this.mouseup)
       }
     },
     mousemove (நி) {
       if (this.சுட்டியிழுத்தல்) {
-        const மூல் = this.சுட்டியிழுத்தல்.சுட்டிகண்டுபிடி_மூல்(நி)
-
-        if (this.சுட்டியிழுத்தல்.வகை === 'நகர்த்தல்') {
-          const [ங, ஞ] = this.சுட்டியிழுத்தல்.சுட்டிகண்டுபிடி(நி)
-
-          this.$store.dispatch(
-            'பார்வை/உருப்படி_மாற்றம்',
-            { id: this.nilai.id, ங: ங, ஞ: ஞ }
-          )
-        } else if (this.சுட்டியிழுத்தல்.வகை === 'அளவைமாற்றமிடது') {
-          const [, ஞ] = this.சுட்டியிழுத்தல்.சுட்டிகண்டுபிடி(நி)
-          this.$store.dispatch(
-            'பார்வை/உருப்படி_மாற்றம்',
-            {
-              id: this.nilai.id,
-              ங: Math.min(மூல்.ங, this.nilai.ங + this.nilai.அகலம் - 50),
-              ஞ: ஞ,
-              அகலம்: Math.max(50, this.nilai.ங - மூல்.ங + this.nilai.அகலம்)
-            }
-          )
-        } else if (this.சுட்டியிழுத்தல்.வகை === 'அளவைமாற்றம்வலது') {
-          this.$store.dispatch(
-            'பார்வை/உருப்படி_மாற்றம்',
-            { id: this.nilai.id, அகலம்: Math.max(50, மூல்.ங - this.nilai.ங) }
-          )
+        let மாற்றம் = {
+          id: this.nilai.id
         }
+        const [ங, ஞ] = this.சுட்டியிழுத்தல்.சுட்டிகண்டுபிடி(நி)
+        if (this.சுட்டியிழுத்தல்.வகை === 'நகர்த்தல்') {
+          மாற்றம்.ங = ங
+          மாற்றம்.ஞ = ஞ
+        } else if (this.சுட்டியிழுத்தல்.வகை.startsWith('அளவைமாற்றம்')) {
+          let குறிப்புகள் = this.சுட்டியிழுத்தல்.வகை.split('-').slice(1)
+          if (குறிப்புகள்.includes('மேலே')) {
+            மாற்றம்.ஞ = Math.min(ஞ, this.nilai.ஞ + this.nilai.உயரம் - 40)
+            மாற்றம்.உயரம் = Math.max(40, this.nilai.ஞ - ஞ + this.nilai.உயரம்)
+          } else {
+            மாற்றம்.உயரம் = Math.max(40, ஞ - this.nilai.ஞ)
+          }
+          if (குறிப்புகள்.includes('வலது')) {
+            மாற்றம்.அகலம் = Math.max(50, ங - this.nilai.ங)
+          } else {
+            மாற்றம்.ங = Math.min(ங, this.nilai.ங + this.nilai.அகலம் - 50)
+            மாற்றம்.அகலம் = Math.max(50, this.nilai.ங - ங + this.nilai.அகலம்)
+          }
+        }
+        this.$store.dispatch(
+          'பார்வை/உருப்படி_மாற்றம்',
+          மாற்றம்
+        )
       }
     }
   }
