@@ -16,6 +16,7 @@
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "postinstall": "npm run lint:fix",
+    "start": "node server.js",
     "test": "npm run unit && npm run e2e",
     "unit": "karma start test/unit/karma.conf.js"
   },
@@ -23,6 +24,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "cldr": "^5.5.4",
+    "express": "^4.17.1",
     "node-sass": "^4.13.1",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",

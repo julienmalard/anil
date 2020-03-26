@@ -1,6 +1,6 @@
 <template>
   <svg id="svgmod"
-    @click="onClick"
+    @click="onClick" ref="svg"
   >
     <nilai v-for="நிலை in நிலைகள்" :key="நிலை.id" :nilai="நிலை" />
     <ottam v-for="ஓட்டம் in ஓட்டங்கள்"
@@ -43,7 +43,29 @@
       onClick (நி) {
         const திருத்தல்நிலை = this.$store.state.பார்வை.திருத்தல்நிலை
         if (திருத்தல்நிலை.பெயர் === 'சேருக') {
-          this.$store.dispatch('பார்வை/செருக', { id: '11', வகை: 'துணை', பெயர்: 'எப்படி2', ங: 400, ஞ: 400 })
+          var dim = this.$refs['svg'].getBoundingClientRect()
+
+          if (திருத்தல்நிலை.உருப்படி === 'நிலை') {
+            this.$store.dispatch('பார்வை/செருக',
+              {
+                id: String(Math.floor(Math.random() * 1e8)),
+                வகை: 'நிலை',
+                பெயர்: 'நிலை',
+                ங: நி.x - 130 / 2 - dim.left,
+                ஞ: நி.y - 40 / 2 - dim.top,
+                அகலம்: 130,
+                உயரம்: 40
+              })
+          } else if (திருத்தல்நிலை.உருப்படி === 'துணை') {
+            this.$store.dispatch('பார்வை/செருக',
+              {
+                id: String(Math.floor(Math.random() * 1e8)),
+                வகை: 'துணை',
+                பெயர்: 'துணை',
+                ங: நி.x - dim.left,
+                ஞ: நி.y - dim.top
+              })
+          }
         }
         if (திருத்தல்நிலை.பெயர் !== 'பூட்டப்பட்டுள்ளது' && திருத்தல்நிலை.பெயர் !== 'திருத்தல்') {
           this.$store.dispatch('பார்வை/திருத்தல்நிலை_மாற்றம்', { பெயர்: 'திருத்தல்' })

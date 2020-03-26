@@ -42,6 +42,8 @@ const messages = {
     }
   },
   Kaqchikel: {
+    திரத்தல்: "Ruk'exonïk",
+    பூட்டு: "Ruq'atonem",
     பொதுமான: {
       மாதிரி: "K'utb'äl",
       இடைமுகம்: 'Rokisanel tunüy',
@@ -62,7 +64,7 @@ const messages = {
       ஆவணம்: 'Wuj',
       கட்டுமனம்: "Rub'anikil",
       பார்வை: "Tz'etb'äl",
-      தகவல்கள்: 'Tzij',
+      தகவல்கள்: "Ruxe'el tzij",
       வழங்கல்: "Ruk'utïk"
     },
     மொழி: {

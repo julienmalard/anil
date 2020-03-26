@@ -76,6 +76,6 @@
 
 <style scoped>
   .v-window-item {
-     height:156px;
+     height:175px;
    }
 </style>
