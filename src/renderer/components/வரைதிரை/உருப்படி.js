@@ -7,6 +7,9 @@ export default {
   computed: {
     திருத்தல் () {
       return this.$store.state.பார்வை.திருத்தல்நிலை.பெயர் === 'திருத்தல்'
+    },
+    திருத்தல்நிலை () {
+      return this.$store.state.பார்வை.திருத்தல்நிலை
     }
   },
   methods: {

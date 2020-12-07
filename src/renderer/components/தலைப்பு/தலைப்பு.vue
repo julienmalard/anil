@@ -1,7 +1,33 @@
 <template>
-  <div id="தலைப்பு">
-    <v-toolbar dense flat>
-      <v-tabs v-model="செயலில்">
+  <div>
+    <v-app-bar fixed extension-height="100">
+      <v-btn icon>
+        <v-icon>mdi-save</v-icon>
+      </v-btn>
+      <v-btn icon>
+        <v-icon>mdi-folder</v-icon>
+      </v-btn>
+
+      <v-toolbar-title>Title</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+
+      <v-btn icon v-on="on" color="#24961e">
+        <v-icon>mdi-earth</v-icon>
+      </v-btn>
+      <div slot="extension">
+        abc
+      </div>
+    </v-app-bar>
+      <!-- <v-tabs v-model="செயலில்">
         <v-tab
           v-for="தாவல் in தாவல்கள்"
           :key="தாவல்.பெயர்"
@@ -18,7 +44,6 @@
       <amaippu-viruppankal></amaippu-viruppankal>
 
       <mozhi-amaippukal :model="dialog"></mozhi-amaippukal>
-    </v-toolbar>
 
     <v-tabs-items v-model="செயலில்">
       <padakai-avanam></padakai-avanam>
@@ -27,7 +52,7 @@
       <padakai-uruvakappaduttutal></padakai-uruvakappaduttutal>
       <padakai-takavalkal></padakai-takavalkal>
       <padakai-vazhankal></padakai-vazhankal>
-    </v-tabs-items>
+    </v-tabs-items> -->
   </div>
 </template>
 

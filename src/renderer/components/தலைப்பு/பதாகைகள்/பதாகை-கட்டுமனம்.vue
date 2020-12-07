@@ -146,19 +146,16 @@
     components: { ceruka },
     computed: {
       puttu: function (நி) {
-        console.log(this.$store.state.பார்வை.திருத்தல்நிலை.பெயர்)
         return this.$store.state.பார்வை.திருத்தல்நிலை.பெயர் === 'பூட்டப்பட்டுள்ளது'
       }
     },
     methods: {
       onClick: function (நி) {
-        console.log(this.puttu)
         this.$store.dispatch(
           'பார்வை/திருத்தல்நிலை_மாற்றம்', {
             பெயர்: this.puttu ? 'திருத்தல்' : 'பூட்டப்பட்டுள்ளது'
           }
         )
-        console.log(this.puttu)
       }
     }
   }
