@@ -22,7 +22,7 @@
   },
   "main": "./dist/electron/main.js",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "cldr": "^5.5.4",
     "express": "^4.17.1",
     "node-sass": "^4.13.1",
